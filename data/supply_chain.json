@@ -1,0 +1,40 @@
+{
+  "tier_1_final_assembly": [
+    {
+      "id": "FA-01",
+      "name": "Acme Auto Assembly",
+      "location": "Pune, India",
+      "depends_on": ["TIER2-CHIP-01", "TIER2-BATTERY-01"]
+    }
+  ],
+  "tier_2_suppliers": [
+    {
+      "id": "TIER2-CHIP-01",
+      "name": "TaiSilicon Microchips",
+      "location": "Taiwan",
+      "part": "Microcontroller Unit",
+      "depends_on": ["TIER3-SILICON-01"]
+    },
+    {
+      "id": "TIER2-BATTERY-01",
+      "name": "PowerCell Batteries",
+      "location": "South Korea",
+      "part": "Lithium-ion Battery",
+      "depends_on": ["TIER3-LITHIUM-01"]
+    }
+  ],
+  "tier_3_raw_materials": [
+    {
+      "id": "TIER3-SILICON-01",
+      "name": "Silicon Valley Mining Co",
+      "location": "Taiwan",
+      "part": "Raw Silicon"
+    },
+    {
+      "id": "TIER3-LITHIUM-01",
+      "name": "Andes Lithium Corp",
+      "location": "Chile",
+      "part": "Lithium Ore"
+    }
+  ]
+}
