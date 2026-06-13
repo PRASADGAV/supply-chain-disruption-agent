@@ -1,8 +1,9 @@
 """
 web_search_duckduckgo.py
-Fetches recent news using ddgs (formerly duckduckgo-search, free, no API key).
+Day 2: Added function to fetch news for multiple queries and save to JSON.
 """
 
+import json
 import time
 from ddgs import DDGS
 
@@ -21,14 +22,30 @@ def search_news(query: str, max_results: int = 5):
     return results
 
 
+def fetch_all_news(queries: list, max_results: int = 3) -> list:
+    """Fetch news for multiple queries and combine into one list."""
+    all_articles = []
+    for q in queries:
+        articles = search_news(q, max_results=max_results)
+        all_articles.extend(articles)
+        time.sleep(2)  # avoid rate limiting between queries
+    return all_articles
+
+
+def save_to_json(articles: list, filepath: str = "../../data/raw_news.json"):
+    import os
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    with open(filepath, "w") as f:
+        json.dump(articles, f, indent=2)
+    print(f"Saved {len(articles)} articles to {filepath}")
+
+
 if __name__ == "__main__":
     queries = [
         "port strike supply chain",
         "semiconductor shortage",
-        "shipping delay",
+        "shipping container delay",
+        "factory fire manufacturing",
     ]
-    for q in queries:
-        print(f"\n=== Query: {q} ===")
-        for article in search_news(q, max_results=3):
-            print(f"- {article['title']} ({article['source']})")
-        time.sleep(2)  # avoid rate limiting between queries
+    articles = fetch_all_news(queries)
+    save_to_json(articles)
