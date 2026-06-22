@@ -5,7 +5,7 @@ This will later be wrapped in an Alternative Sourcing Agent (Week 3).
 """
 
 import json
-
+from src.agents.schemas import SourcingRecommendation
 
 def load_supply_chain(filepath: str = "data/supply_chain.json") -> dict:
     with open(filepath, "r") as f:
@@ -26,19 +26,28 @@ def find_alternatives(data: dict, part: str, exclude_id: str) -> list:
 
     return alternatives
 
+def get_sourcing_recommendation(
+    data: dict, part: str, disrupted_id: str
+) -> SourcingRecommendation:
+    """Find alternatives and return a validated Pydantic SourcingRecommendation."""
+    alternatives = find_alternatives(data, part, disrupted_id)
+    alt_ids = [a["id"] for a in alternatives]
+
+    recommendation = SourcingRecommendation(
+        part=part,
+        primary_supplier_id=disrupted_id,
+        alternative_supplier_ids=alt_ids,
+        notes=f"Found {len(alt_ids)} alternative(s) for {part}"
+    )
+    return recommendation
 
 if __name__ == "__main__":
     data = load_supply_chain()
 
-    # Example: TIER2-CHIP-01 (Taiwan) is disrupted, find alternatives for "Microcontroller Unit"
-    disrupted_id = "TIER2-CHIP-01"
-    part = "Microcontroller Unit"
+    rec = get_sourcing_recommendation(
+        data,
+        "Microcontroller Unit",
+        "TIER2-CHIP-01"
+    )
 
-    alternatives = find_alternatives(data, part, disrupted_id)
-
-    if alternatives:
-        print(f"Alternatives for {part} (excluding {disrupted_id}):")
-        for alt in alternatives:
-            print(f"- {alt['name']} ({alt['location']})")
-    else:
-        print(f"No alternatives found for {part}. Need to expand mock data with backup suppliers.")
+    print(rec.model_dump())
