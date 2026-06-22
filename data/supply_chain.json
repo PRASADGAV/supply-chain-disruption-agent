@@ -21,6 +21,13 @@
       "location": "South Korea",
       "part": "Lithium-ion Battery",
       "depends_on": ["TIER3-LITHIUM-01"]
+    },
+    {
+      "id": "TIER2-CHIP-02",
+      "name": "Global Micro Devices",
+      "location": "Japan",
+      "part": "Microcontroller Unit",
+      "depends_on": ["TIER3-SILICON-02"]
     }
   ],
   "tier_3_raw_materials": [
@@ -35,6 +42,12 @@
       "name": "Andes Lithium Corp",
       "location": "Chile",
       "part": "Lithium Ore"
+    },
+    {
+      "id": "TIER3-SILICON-02",
+      "name": "Pacific Silicon Ltd",
+      "location": "Australia",
+      "part": "Raw Silicon"
     }
   ]
 }
